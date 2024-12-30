@@ -44,12 +44,13 @@ export const loginUser = createAsyncThunk('auth/login/', async (credentials, thu
 
 export const logoutUser = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
     try {
+        const token = localStorage.getItem("accessToken");
         const response = await axios.post(
             `${API_URL}/logout/`,
             {},
             {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+                    Authorization: `Bearer ${token}`
                 },
                 withCredentials: true
             }
