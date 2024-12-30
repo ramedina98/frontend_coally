@@ -13,7 +13,7 @@ const Home = () => {
             <Header />
                 <main
                     className="w-full flex justify-center items-center"
-                    style={{ minHeight: '75vh' }}
+                    style={{ minHeight: '80vh' }}
                 >
                     {(error || message) && (
                         <Notification

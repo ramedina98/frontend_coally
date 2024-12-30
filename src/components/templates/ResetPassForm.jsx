@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { loginUser } from "../../features/auth/authSlice";
+import { useDispatch } from "react-redux";
+import { resetPassword } from "../../features/auth/authSlice";
 import LabelInput from "../molecules/LabelInput";
 
-const LoginForm = () => {
+const ResetPassForm = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -12,12 +12,12 @@ const LoginForm = () => {
     const [iterator, setIterator] = useState(0);
     const [storageLabel, setStorageLabel] = useState({});
     const [dataLabel, setDataLabel] = useState({
-        user_name: "Nombre de usuario",
-        password: "Contraseña"
+        token: "Token",
+        newPass: "Nueva contraseña"
     });
     const [data, setData] = useState({
-        user_name: "",
-        password: ""
+        token: "",
+        newPass: ""
     });
 
     const handleSeePasswordBtn = (e) => {
@@ -30,14 +30,14 @@ const LoginForm = () => {
 
         setData((prev) => ({
             ...prev,
-            [name]: value
-        }));
+            [name]: value.trim()
+        }))
     }
 
     const inputValidator = () => {
         let isValid = true;
 
-        const fields = ["user_name", "password"];
+        const fields = ["token", "newPass"];
 
         fields.forEach((field) => {
             if (data[field] === "") {
@@ -61,7 +61,8 @@ const LoginForm = () => {
         return isValid;
     };
 
-    const handleLogBtn = async(e) => {
+    console.log(data)
+    const handleResetBtn = async(e) => {
         e.preventDefault();
 
         const isValid = inputValidator();
@@ -72,35 +73,17 @@ const LoginForm = () => {
         }
 
         try {
-            await dispatch(loginUser(data)).unwrap();
+            await dispatch(resetPassword(data)).unwrap();
 
             setData({
-                user_name: "",
-                password: ""
+                token: "",
+                newPass: ""
             });
 
-            navigate("/taskify/");
+            navigate("/login");
         } catch (error) {
             console.log("Error: " + error.message);
         }
-    }
-
-    // Funcion para cancelar todo...
-    const cancelProcessBtn = (e) => {
-        e.preventDefault();
-
-        setData({
-            user_name: "",
-            password: ""
-        });
-
-        navigate("/");
-    }
-
-    // funcion para hacer el reset del password...
-    const resetPass = (e) => {
-        e.preventDefault();
-        navigate("/recover-password")
     }
 
     return (
@@ -114,39 +97,34 @@ const LoginForm = () => {
                 <h3
                     className="font-bold text-2xl mb-2 tracking-wider"
                 >
-                    Inicia sesión en tu cuenta
+                    Restaurar contraseña
                 </h3>
-                <span
-                    className="tracking-wider"
-                >
-                    Siempre es bueno tenerte de vuelta
-                </span>
             </div>
             <div
-                className="bg-blue-soft p-3 flex flex-wrap gap-4 mt-2 justify-between"
+                className="bg-blue-soft p-3 flex flex-wrap gap-4 mt-2 justify-center"
                 style={{ width: '94%'}}
             >
                 <LabelInput
-                    labelText={dataLabel.user_name}
-                    inputId={"user_name"}
-                    inputName={"user_name"}
-                    inputMax={100}
+                    labelText={dataLabel.token}
+                    inputId={"token"}
+                    inputName={"token"}
+                    inputMax={250}
                     inputType={"text"}
-                    placeholder={"Ingrese su nombre de usuario"}
+                    placeholder={"Ingrese token"}
                     inputHanler={(e) => inputHanler(e)}
                 />
                 <LabelInput
-                    labelText={dataLabel.password}
-                    inputId={"password"}
-                    inputName={"password"}
+                    labelText={dataLabel.newPass}
+                    inputId={"Nueva contraseña"}
+                    inputName={"newPass"}
                     inputMax={100}
-                    inputType={passView ? "text": "password"}
-                    placeholder={"Ingrese su contraseña"}
+                    inputType={passView ? "text" : "password"}
+                    placeholder={"Ingrese nueva contraseña"}
                     inputHanler={(e) => inputHanler(e)}
                 />
             </div>
             <div
-                className="w-full my-2 p-3 flex flex-wrap gap-4 justify-between"
+                className="w-full p-3 flex flex-wrap gap-4 justify-between"
             >
                 <button
                     onClick={(e) => handleSeePasswordBtn(e)}
@@ -154,29 +132,16 @@ const LoginForm = () => {
                 >
                     Ver contraseña
                 </button>
-                <button
-                    onClick={(e) => resetPass(e)}
-                    className="ml-3 py-2 pr-4 text-left text-slate-100 tracking-wider font-medium"
-                >
-                    Olvide mi contraseña
-                </button>
             </div>
             <button
-                    className="p-3 flex justify-center items-center text-blue-dark tracking-wider font-medium text-lg bg-slate-50 hover:bg-slate-200  transition-colors rounded-md mb-4 shadow-sm"
-                    style={{ width: 'clamp(220px, 90%, 450px)' }}
-                    onClick={(e) => handleLogBtn(e)}
-                >
-                    Iniciar sesión
-                </button>
-                <button
-                    className="p-3 flex justify-center items-center text-slate-100 tracking-wider font-medium text-lg bg-neutral-700 hover:bg-neutral-900 transition-colors rounded-md shadow-sm"
-                    style={{ width: 'clamp(220px, 90%, 450px)' }}
-                    onClick={(e) => cancelProcessBtn(e)}
-                >
-                    Cancelar
-                </button>
+                className="mt-4 p-3 flex justify-center items-center text-blue-dark tracking-wider font-medium text-lg bg-slate-50 hover:bg-slate-200  transition-colors rounded-md mb-4 shadow-sm"
+                style={{ width: 'clamp(220px, 90%, 450px)' }}
+                onClick={(e) => handleResetBtn(e)}
+            >
+                Recuperar
+            </button>
         </form>
     );
 }
 
-export default LoginForm;
+export default ResetPassForm;

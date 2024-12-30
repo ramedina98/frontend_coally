@@ -25,7 +25,9 @@ export const getUsers = createAsyncThunk('auth/', async (_, thunkAPI) => {
 
 export const loginUser = createAsyncThunk('auth/login/', async (credentials, thunkAPI) => {
     try {
-        const response = await axios.post(`${API_URL}/login/`, credentials, { withCredentials: true });
+        const response = await axios.post(`${API_URL}/login/`,
+            {username: credentials.user_name, password: credentials.password},
+            { withCredentials: true });
         const { accessToken, message } = response.data;
 
         // storage the token...
@@ -93,9 +95,9 @@ export const recoverPassword = createAsyncThunk("auth/recover-password", async (
     }
 });
 
-export const resetPassword = createAsyncThunk("auth/reset-forgoten-password", async ({ token, newPass }, thunkAPI) => {
+export const resetPassword = createAsyncThunk("auth/reset-forgoten-password", async (data, thunkAPI) => {
         try {
-            const response = await axios.put(`${API_URL}/reset-forgoten-password/`, { token, newPass });
+            const response = await axios.put(`${API_URL}/reset-forgoten-password/`, { token: data.token, newPass: data.newPass });
             return response.data.message;
         } catch (error) {
             if (error.response) {
