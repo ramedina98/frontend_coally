@@ -11,6 +11,13 @@
 6. [Tecnologías relevantes](#tecnologías-relevantes)
 7. [Contacto](#contacto)
 
+**Da click en el link y descubre taskify** [Taskify](https://frontendcoally-production-f03e.up.railway.app/)
+
+**Nota:** ya existe un usuario que puede ser usado para visualizar la app.
+
+- username: richard@
+- password: Kira9697
+
 ## Introducción
 
 Este repositorio contiene el **Frontend** de la app **Taskify**. Esta interfaz de usuario es muy intuitiva y responsiva
@@ -26,11 +33,11 @@ Taskify, la plataforma que resolvera tu día a día.
 
 ### Variables de entorno requeridas
 
-``.env
+```JavaScript
 VITE_API_URL_AUTH=https://outstanding-spontaneity-production.up.railway.app/auth
 VITE_API_URL_TASK=https://outstanding-spontaneity-production.up.railway.app/task
 VITE_API_URL_USER=https://outstanding-spontaneity-production.up.railway.app/user
-´´
+```
 
 ## Funcionamiento
 
